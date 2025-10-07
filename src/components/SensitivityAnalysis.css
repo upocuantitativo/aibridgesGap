@@ -1,0 +1,374 @@
+.sensitivity-analysis {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Prediction Container */
+.prediction-container {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.prediction-container h2 {
+  text-align: center;
+  color: #333;
+  margin: 0 0 20px 0;
+  font-size: 1.5rem;
+}
+
+.probability-display {
+  border-radius: 10px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.5s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.probability-value {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.probability-label {
+  font-size: 1.3rem;
+  margin-top: 10px;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+/* Main Grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Variables Section */
+.variables-section {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.variables-section h2 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+}
+
+.section-description {
+  color: #666;
+  margin: 0 0 30px 0;
+  line-height: 1.6;
+}
+
+.category-group {
+  margin-bottom: 30px;
+}
+
+.category-title {
+  color: #667eea;
+  font-size: 1.3rem;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.variable-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.variable-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.variable-header {
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.variable-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.variable-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.expand-icon {
+  color: #667eea;
+  font-size: 0.8rem;
+}
+
+.variable-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 250px;
+}
+
+.slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, #667eea, #764ba2);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #667eea;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #667eea;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.value-display {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+  min-width: 40px;
+  text-align: right;
+}
+
+.variable-details {
+  padding: 20px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+}
+
+.questions-section {
+  margin-bottom: 15px;
+}
+
+.questions-section h4 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+}
+
+.questions-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.questions-section li {
+  color: #555;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.source-section {
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  border-left: 3px solid #667eea;
+}
+
+/* Recommendations Section */
+.recommendations-section {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.recommendations-section h2 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+}
+
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recommendation-card {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 10px;
+  padding: 15px;
+  border: 2px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.rec-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.rec-rank {
+  background: #667eea;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.rec-variable {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.rec-details {
+  margin: 10px 0;
+}
+
+.rec-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 5px 0;
+}
+
+.rec-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.rec-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.rec-value.suggested {
+  color: #667eea;
+}
+
+.rec-value.impact {
+  color: #28a745;
+}
+
+.apply-button {
+  width: 100%;
+  padding: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.apply-button:hover {
+  background: #764ba2;
+  transform: scale(1.02);
+}
+
+.no-recommendations {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Scrollbar Styling */
+.recommendations-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.recommendations-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.recommendations-section::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
+}
+
+.recommendations-section::-webkit-scrollbar-thumb:hover {
+  background: #764ba2;
+}
