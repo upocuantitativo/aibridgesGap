@@ -1,0 +1,120 @@
+========================================
+INSTRUCCIONES FINALES DE DEPLOYMENT
+========================================
+
+La aplicación web está lista y el repositorio Git ha sido inicializado.
+
+PRÓXIMOS PASOS PARA SUBIR A GITHUB:
+------------------------------------
+
+1. CREAR PERSONAL ACCESS TOKEN (PAT) EN GITHUB:
+
+   a. Ve a: https://github.com/settings/tokens
+   b. Click en "Generate new token (classic)"
+   c. Dale un nombre: "aibridgesGap deployment"
+   d. Selecciona estos permisos:
+      ☑ repo (todos los sub-items)
+      ☑ workflow
+   e. Click "Generate token"
+   f. COPIA EL TOKEN INMEDIATAMENTE (no se mostrará de nuevo)
+
+2. HACER PUSH AL REPOSITORIO:
+
+   Abre Git Bash o la terminal y ejecuta:
+
+   cd C:\Users\Usuario\Documents\liñan\web-app
+   git push -u origin main
+
+   Cuando te pida credenciales:
+   - Username: upocuantitativo
+   - Password: [PEGA AQUÍ EL TOKEN QUE COPIASTE, NO LA CONTRASEÑA 1234uiOP$]
+
+3. HABILITAR GITHUB PAGES:
+
+   a. Ve a: https://github.com/upocuantitativo/aibridgesGap
+   b. Click en "Settings" (arriba a la derecha)
+   c. En el menú lateral izquierdo, click en "Pages"
+   d. En "Source", selecciona "GitHub Actions"
+   e. ¡Listo! El sitio se desplegará automáticamente
+
+4. ACCEDER A LA APLICACIÓN:
+
+   Después de 2-3 minutos, la aplicación estará disponible en:
+   https://upocuantitativo.github.io/aibridgesGap/
+
+   Credenciales de acceso:
+   - Usuario: upocuantitativo
+   - Contraseña: 1234uiOP$
+
+========================================
+CARACTERÍSTICAS DE LA APLICACIÓN
+========================================
+
+✅ Sistema de login con usuario y contraseña
+✅ Análisis de sensibilidad con 35 variables expandibles
+✅ Visualización de probabilidad con gradiente rojo-azul
+✅ Panel de recomendaciones ordenadas por prioridad
+✅ Visualización de red neuronal interactiva
+✅ Gráficos de análisis (importancia, valores actuales vs óptimos, radar, tendencia)
+✅ Preguntas de encuesta con fuentes bibliográficas al pasar el mouse
+✅ Aplicación responsive (funciona en móvil y escritorio)
+
+========================================
+ESTRUCTURA DE ARCHIVOS
+========================================
+
+web-app/
+├── .github/workflows/deploy.yml    # Auto-deployment
+├── src/
+│   ├── components/
+│   │   ├── Login.jsx/css          # Pantalla de login
+│   │   ├── SensitivityAnalysis    # Análisis principal
+│   │   ├── NeuralNetworkViz       # Visualización red neuronal
+│   │   └── ChartsPanel            # Gráficos
+│   ├── data/
+│   │   └── variablesDefinition.js # 35 variables con preguntas y fuentes
+│   ├── model/
+│   │   └── neuralNetworkModel.js  # Modelo [50,25,12] con predicción
+│   └── App.jsx                    # Aplicación principal
+├── README.md                      # Documentación completa
+├── DEPLOYMENT.md                  # Instrucciones de deployment
+└── package.json                   # Dependencias
+
+========================================
+DESARROLLO LOCAL (OPCIONAL)
+========================================
+
+Para probar la aplicación localmente antes de subirla:
+
+1. Instalar dependencias:
+   npm install
+
+2. Ejecutar servidor de desarrollo:
+   npm run dev
+
+3. Abrir navegador en: http://localhost:5173
+
+========================================
+ACTUALIZAR LA APLICACIÓN
+========================================
+
+Después de hacer cambios:
+
+cd C:\Users\Usuario\Documents\liñan\web-app
+git add .
+git commit -m "Descripción de los cambios"
+git push
+
+El sitio se actualizará automáticamente en 2-3 minutos.
+
+========================================
+SOPORTE
+========================================
+
+Si tienes problemas:
+1. Verifica que el PAT tenga los permisos correctos
+2. Revisa que GitHub Pages esté habilitado en Settings > Pages
+3. Espera 2-3 minutos después del push para que se actualice
+4. Limpia la caché del navegador si no ves los cambios
+
+========================================
