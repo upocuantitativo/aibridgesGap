@@ -41,11 +41,17 @@ function App() {
 
       <main className="main-content">
         {currentTab === 'model' && (
-          <SensitivityAnalysis initialValues={modelValues} />
+          <SensitivityAnalysis
+            initialValues={modelValues}
+            onTabChange={setCurrentTab}
+          />
         )}
 
         {currentTab === 'survey' && (
-          <Survey onLoadToModel={handleLoadToModel} />
+          <Survey
+            onLoadToModel={handleLoadToModel}
+            onTabChange={setCurrentTab}
+          />
         )}
       </main>
 

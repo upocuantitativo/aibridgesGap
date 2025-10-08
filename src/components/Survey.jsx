@@ -3,7 +3,7 @@ import { VARIABLES_DEFINITION } from '../data/variablesDefinition';
 import { getDefaultValues } from '../data/variablesDefinition';
 import './Survey.css';
 
-const Survey = ({ onLoadToModel }) => {
+const Survey = ({ onLoadToModel, onTabChange }) => {
   const [surveyData, setSurveyData] = useState({});
   const [currentSection, setCurrentSection] = useState('intro');
 
@@ -811,14 +811,34 @@ const Survey = ({ onLoadToModel }) => {
   );
 
   return (
-    <div className="survey-container">
-      {currentSection === 'intro' && renderIntroduction()}
-      {currentSection === 'A' && renderSectionA()}
-      {currentSection === 'B' && renderSectionB()}
-      {currentSection === 'C' && renderSectionC()}
-      {currentSection === 'D' && renderSectionD()}
-      {currentSection === 'E' && renderSectionE()}
-      {currentSection === 'summary' && renderSummary()}
+    <div className="survey-wrapper">
+      {/* Fixed Header with Tabs */}
+      <div className="survey-header">
+        <div className="header-content">
+          <div className="header-left">
+            <h1>Predictive Edge of AI in Entrepreneurship</h1>
+            <p className="subtitle">Entrepreneurship Survey</p>
+            <div className="header-tabs">
+              <button className="tab-button" onClick={() => onTabChange && onTabChange('model')}>
+                🎯 Model Analysis
+              </button>
+              <button className="tab-button active">
+                📝 Survey
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="survey-container">
+        {currentSection === 'intro' && renderIntroduction()}
+        {currentSection === 'A' && renderSectionA()}
+        {currentSection === 'B' && renderSectionB()}
+        {currentSection === 'C' && renderSectionC()}
+        {currentSection === 'D' && renderSectionD()}
+        {currentSection === 'E' && renderSectionE()}
+        {currentSection === 'summary' && renderSummary()}
+      </div>
     </div>
   );
 };

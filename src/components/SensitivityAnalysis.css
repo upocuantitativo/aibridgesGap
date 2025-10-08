@@ -380,6 +380,21 @@
   font-weight: 600;
   color: #333;
   font-size: 0.95rem;
+  flex: 1;
+}
+
+.rec-direction-badge {
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.rec-direction-badge.increase {
+  background: #28a745;
 }
 
 .rec-details {

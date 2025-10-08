@@ -5,7 +5,7 @@ import NeuralNetworkVisualization from './NeuralNetworkVisualization';
 import ChartsPanel from './ChartsPanel';
 import './SensitivityAnalysis.css';
 
-const SensitivityAnalysis = ({ initialValues }) => {
+const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
   const [values, setValues] = useState(getDefaultValues());
   const [expandedVars, setExpandedVars] = useState({});
   const [prediction, setPrediction] = useState(null);
@@ -59,6 +59,14 @@ const SensitivityAnalysis = ({ initialValues }) => {
           <div className="header-left">
             <h1>Predictive Edge of AI in Entrepreneurship</h1>
             <p className="subtitle">Neural Network Model for New Venture Creation Prediction</p>
+            <div className="header-tabs">
+              <button className="tab-button active">
+                🎯 Model Analysis
+              </button>
+              <button className="tab-button" onClick={() => onTabChange && onTabChange('survey')}>
+                📝 Survey
+              </button>
+            </div>
           </div>
           <div className="header-right">
             <div className="probability-mini">
@@ -152,11 +160,14 @@ const SensitivityAnalysis = ({ initialValues }) => {
           <div className="recommendations-list">
             {recommendations.map((rec, idx) => {
               const varDef = VARIABLES_DEFINITION[rec.variable];
+              const isDecrease = rec.direction === 'decrease';
               return (
-                <div key={rec.variable} className="recommendation-card">
+                <div key={`${rec.variable}-${rec.direction}`} className="recommendation-card">
                   <div className="rec-header">
                     <span className="rec-rank">#{idx + 1}</span>
                     <span className="rec-variable">{varDef.name}</span>
+                    {isDecrease && <span className="rec-direction-badge">↓ Decrease</span>}
+                    {!isDecrease && <span className="rec-direction-badge increase">↑ Increase</span>}
                   </div>
                   <div className="rec-details">
                     <div className="rec-row">
@@ -170,7 +181,7 @@ const SensitivityAnalysis = ({ initialValues }) => {
                     <div className="rec-row">
                       <span className="rec-label">Potential Impact:</span>
                       <span className="rec-value impact">
-                        +{(rec.potentialIncrease * 100).toFixed(4)}%
+                        +{(rec.potentialIncrease * 100).toFixed(3)}%
                       </span>
                     </div>
                   </div>
@@ -178,7 +189,7 @@ const SensitivityAnalysis = ({ initialValues }) => {
                     className="apply-button"
                     onClick={() => handleValueChange(rec.variable, rec.suggestedValue)}
                   >
-                    Apply Suggestion
+                    Apply Suggestion {isDecrease ? '↓' : '↑'}
                   </button>
                 </div>
               );

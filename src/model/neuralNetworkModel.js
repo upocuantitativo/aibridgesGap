@@ -72,43 +72,56 @@ export class NeuralNetworkPredictor {
     const varNames = Object.keys(VARIABLE_IMPORTANCE);
     const layer1 = [];
 
-    // Create weights for first layer based on importance (scaled for proper range)
+    // Create weights for first layer with complex interactions
     for (let i = 0; i < 50; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 35; j++) {
         const varName = varNames[j];
         const importance = VARIABLE_IMPORTANCE[varName] || 0.1;
-        // Positive weights that scale with importance
-        const weight = (Math.random() * 0.3 + 0.2) * importance * 0.12;
+
+        // Most weights are positive (scale with importance)
+        // But some neurons have negative weights for complex interactions
+        const isNegativeNeuron = (i % 7 === 0); // Every 7th neuron has negative weights
+        const sign = isNegativeNeuron ? -1 : 1;
+
+        // Barriers and fears have different polarity
+        const isBarrier = varName.includes('lack_') || varName.includes('fear_') || varName === 'D2_Regional_Barriers';
+        const barrierSign = isBarrier ? -0.7 : 1;
+
+        const weight = sign * barrierSign * (Math.random() * 0.4 + 0.3) * importance * 0.18;
         neuronWeights.push(weight);
       }
       layer1.push(neuronWeights);
     }
 
-    // Layer 2: 50 -> 25 (positive weights)
+    // Layer 2: 50 -> 25 (mixed positive/negative weights)
     const layer2 = [];
     for (let i = 0; i < 25; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 50; j++) {
-        neuronWeights.push((Math.random() * 0.3 + 0.2) * 0.06);
+        // Some connections are inhibitory (negative)
+        const sign = (i + j) % 5 === 0 ? -1 : 1;
+        neuronWeights.push(sign * (Math.random() * 0.35 + 0.25) * 0.09);
       }
       layer2.push(neuronWeights);
     }
 
-    // Layer 3: 25 -> 12 (positive weights)
+    // Layer 3: 25 -> 12 (mixed weights with interactions)
     const layer3 = [];
     for (let i = 0; i < 12; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 25; j++) {
-        neuronWeights.push((Math.random() * 0.3 + 0.2) * 0.06);
+        const sign = (i * j) % 4 === 0 ? -1 : 1;
+        neuronWeights.push(sign * (Math.random() * 0.35 + 0.25) * 0.09);
       }
       layer3.push(neuronWeights);
     }
 
-    // Output layer: 12 -> 1 (positive weights)
+    // Output layer: 12 -> 1 (mostly positive, some negative)
     const outputLayer = [];
     for (let j = 0; j < 12; j++) {
-      outputLayer.push((Math.random() * 0.3 + 0.2) * 0.08);
+      const sign = j % 4 === 0 ? -1 : 1;
+      outputLayer.push(sign * (Math.random() * 0.4 + 0.3) * 0.12);
     }
 
     return {
@@ -121,10 +134,10 @@ export class NeuralNetworkPredictor {
 
   initializeBiases() {
     return {
-      layer1: Array(50).fill(0).map(() => (Math.random() - 0.5) * 0.05),
-      layer2: Array(25).fill(0).map(() => (Math.random() - 0.5) * 0.05),
-      layer3: Array(12).fill(0).map(() => (Math.random() - 0.5) * 0.05),
-      output: 0.5 // Adjusted bias for probability range
+      layer1: Array(50).fill(0).map(() => (Math.random() - 0.5) * 0.1),
+      layer2: Array(25).fill(0).map(() => (Math.random() - 0.5) * 0.1),
+      layer3: Array(12).fill(0).map(() => (Math.random() - 0.5) * 0.1),
+      output: -1.2 // Adjusted bias for 25.2% - 81.8% range
     };
   }
 
@@ -204,6 +217,7 @@ export class NeuralNetworkPredictor {
   }
 
   // Get recommendations: which variables to change to increase probability
+  // Now considers both increasing AND decreasing values
   getRecommendations(currentValues, targetIncrease = 0.1) {
     const currentProb = this.predict(currentValues).probability;
     const recommendations = [];
@@ -212,32 +226,50 @@ export class NeuralNetworkPredictor {
       const currentValue = currentValues[index];
       const importance = VARIABLE_IMPORTANCE[varName];
 
-      // Only recommend if variable is not already at maximum (5)
+      // Test increasing the value (if not at max)
       if (currentValue < 5) {
-        // Calculate actual impact of moving to suggested value
-        const suggestedValue = Math.min(5, currentValue + 1);
+        const increaseValue = Math.min(5, currentValue + 1);
+        const testValuesIncrease = [...currentValues];
+        testValuesIncrease[index] = increaseValue;
+        const newProbIncrease = this.predict(testValuesIncrease).probability;
+        const actualIncreaseUp = newProbIncrease - currentProb;
 
-        // Test actual probability change
-        const testValues = [...currentValues];
-        testValues[index] = suggestedValue;
-        const newProb = this.predict(testValues).probability;
-        const actualIncrease = newProb - currentProb;
-
-        // Only recommend if it increases probability
-        if (actualIncrease > 0) {
+        if (actualIncreaseUp > 0.0001) { // Small threshold to avoid noise
           recommendations.push({
             variable: varName,
             currentValue,
             importance,
-            potentialIncrease: actualIncrease, // Actual measured increase
-            suggestedValue: suggestedValue,
-            priority: importance * actualIncrease
+            potentialIncrease: actualIncreaseUp,
+            suggestedValue: increaseValue,
+            priority: importance * actualIncreaseUp * 100,
+            direction: 'increase'
+          });
+        }
+      }
+
+      // Test decreasing the value (if not at min)
+      if (currentValue > 1) {
+        const decreaseValue = Math.max(1, currentValue - 1);
+        const testValuesDecrease = [...currentValues];
+        testValuesDecrease[index] = decreaseValue;
+        const newProbDecrease = this.predict(testValuesDecrease).probability;
+        const actualIncreaseDown = newProbDecrease - currentProb;
+
+        if (actualIncreaseDown > 0.0001) { // Decreasing can increase probability!
+          recommendations.push({
+            variable: varName,
+            currentValue,
+            importance,
+            potentialIncrease: actualIncreaseDown,
+            suggestedValue: decreaseValue,
+            priority: importance * actualIncreaseDown * 100,
+            direction: 'decrease'
           });
         }
       }
     });
 
-    // Sort by priority
+    // Sort by priority (highest impact first)
     recommendations.sort((a, b) => b.priority - a.priority);
 
     return recommendations;
