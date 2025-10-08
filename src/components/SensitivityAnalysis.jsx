@@ -38,10 +38,16 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
   };
 
   const handleValueChange = (varName, newValue) => {
-    setValues(prev => ({
-      ...prev,
-      [varName]: parseFloat(newValue)
-    }));
+    const numValue = parseFloat(newValue);
+    console.log(`Changing ${varName} from ${values[varName]} to ${numValue}`);
+    setValues(prev => {
+      const updated = {
+        ...prev,
+        [varName]: numValue
+      };
+      console.log('Updated values:', updated);
+      return updated;
+    });
   };
 
   const getProbabilityLabel = (prob) => {

@@ -22,19 +22,28 @@ const Survey = ({ onLoadToModel, onTabChange }) => {
   const handleLoadToModel = () => {
     // Map survey responses to model variables
     const modelValues = mapSurveyToModel(surveyData);
+    console.log('Survey data:', surveyData);
+    console.log('Mapped model values:', modelValues);
     onLoadToModel(modelValues);
+  };
+
+  // Helper to normalize 7-point scale to 5-point scale
+  const normalize7to5 = (value7) => {
+    if (!value7) return 3;
+    // Map 1-7 to 1-5: (value - 1) * 4/6 + 1
+    return 1 + ((parseFloat(value7) - 1) * 4 / 6);
   };
 
   const mapSurveyToModel = (survey) => {
     const defaultValues = getDefaultValues();
     const modelValues = { ...defaultValues };
 
-    // Section A1 - Personality (Femininity/Masculinity)
+    // Section A1 - Personality (Femininity/Masculinity) - 7 point scale
     const femQuestions = ['A1_gentle', 'A1_sympathetic', 'A1_tender', 'A1_warm', 'A1_affectionate', 'A1_sensitive'];
     const masQuestions = ['A1_leader_skills', 'A1_acts_leader', 'A1_dominant', 'A1_strong_personality', 'A1_defends_ideas', 'A1_decides_easily'];
 
-    const femSum = femQuestions.reduce((sum, q) => sum + (parseFloat(survey[q]) || 0), 0);
-    const masSum = masQuestions.reduce((sum, q) => sum + (parseFloat(survey[q]) || 0), 0);
+    const femSum = femQuestions.reduce((sum, q) => sum + normalize7to5(survey[q]), 0);
+    const masSum = masQuestions.reduce((sum, q) => sum + normalize7to5(survey[q]), 0);
 
     modelValues['A1_1_Personality_Fem'] = femSum > 0 ? femSum / femQuestions.length : 3;
     modelValues['A1_2_Personality_Mas'] = masSum > 0 ? masSum / masQuestions.length : 3;
