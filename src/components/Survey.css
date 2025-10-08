@@ -73,6 +73,14 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .survey-container {
+    padding: 10px;
+  }
 }
 
 .survey-intro {
@@ -115,6 +123,14 @@
   border-radius: 10px;
   padding: 25px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .survey-section {
+    padding: 15px;
+  }
 }
 
 .survey-section h2 {
@@ -147,31 +163,36 @@
 
 .question-item {
   margin-bottom: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   background: #f8f9fa;
   border-radius: 4px;
   display: flex;
   align-items: center;
   gap: 15px;
+  overflow: hidden; /* Prevent overflow */
 }
 
 .question-item label {
   color: #555;
   font-size: 0.85rem;
   font-weight: 500;
-  min-width: 200px;
+  min-width: 180px;
+  max-width: 250px;
   flex-shrink: 0;
+  word-wrap: break-word;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .question-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
+    padding: 10px 12px;
   }
 
   .question-item label {
     min-width: auto;
+    max-width: 100%;
   }
 }
 
@@ -187,8 +208,12 @@
 .likert-scale {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   justify-content: flex-start;
+  flex-wrap: nowrap;
+  flex: 1;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .likert-option {
@@ -197,6 +222,7 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
+  flex-shrink: 0;
 }
 
 .likert-option input[type="radio"] {
@@ -207,9 +233,9 @@
 
 .likert-number {
   display: inline-block;
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
   border: 2px solid #ddd;
   border-radius: 4px;
@@ -217,6 +243,7 @@
   transition: all 0.15s;
   font-size: 0.8rem;
   font-weight: 600;
+  box-sizing: border-box;
 }
 
 .likert-option:hover .likert-number {
@@ -253,6 +280,45 @@
 
 .likert-label-end::after {
   content: ")";
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .likert-scale {
+    gap: 2px;
+  }
+
+  .likert-number {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .likert-labels {
+    font-size: 0.65rem;
+    margin-left: 5px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .likert-scale {
+    gap: 1px;
+  }
+
+  .likert-number {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 0.7rem;
+    border-width: 1px;
+  }
+
+  .likert-labels {
+    font-size: 0.6rem;
+    margin-left: 3px;
+  }
 }
 
 /* Section Navigation */
