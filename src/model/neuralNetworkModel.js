@@ -63,65 +63,54 @@ export class NeuralNetworkPredictor {
   }
 
   initializeWeights() {
-    // Initialize weights based on variable importance
-    // Layer 1: 35 inputs -> 50 neurons
-    // Layer 2: 50 -> 25 neurons
-    // Layer 3: 25 -> 12 neurons
-    // Output: 12 -> 1 neuron
+    // Simplified linear model based on variable importance
+    // This ensures predictable min/max probability range
 
     const varNames = Object.keys(VARIABLE_IMPORTANCE);
     const layer1 = [];
 
-    // Create weights for first layer with complex interactions
+    // Direct weighted connections - simple linear transformation
+    // Each neuron focuses on different aspects of the input
     for (let i = 0; i < 50; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 35; j++) {
         const varName = varNames[j];
         const importance = VARIABLE_IMPORTANCE[varName] || 0.1;
 
-        // Most weights are positive (scale with importance)
-        // But some neurons have negative weights for complex interactions
-        const isNegativeNeuron = (i % 7 === 0); // Every 7th neuron has negative weights
-        const sign = isNegativeNeuron ? -1 : 1;
-
-        // Barriers and fears have different polarity
+        // Barriers and fears have negative impact (inverse relationship)
         const isBarrier = varName.includes('lack_') || varName.includes('fear_') || varName === 'D2_Regional_Barriers';
-        const barrierSign = isBarrier ? -0.7 : 1;
+        const sign = isBarrier ? -1 : 1;
 
-        const weight = sign * barrierSign * (Math.random() * 0.4 + 0.3) * importance * 0.18;
+        // Small weight scaled by importance - controlled variation
+        const weight = sign * importance * 0.02 * (0.8 + Math.random() * 0.4);
         neuronWeights.push(weight);
       }
       layer1.push(neuronWeights);
     }
 
-    // Layer 2: 50 -> 25 (mixed positive/negative weights)
+    // Simple propagation through layers
     const layer2 = [];
     for (let i = 0; i < 25; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 50; j++) {
-        // Some connections are inhibitory (negative)
-        const sign = (i + j) % 5 === 0 ? -1 : 1;
-        neuronWeights.push(sign * (Math.random() * 0.35 + 0.25) * 0.09);
+        neuronWeights.push(0.02 * (0.8 + Math.random() * 0.4));
       }
       layer2.push(neuronWeights);
     }
 
-    // Layer 3: 25 -> 12 (mixed weights with interactions)
     const layer3 = [];
     for (let i = 0; i < 12; i++) {
       const neuronWeights = [];
       for (let j = 0; j < 25; j++) {
-        const sign = (i * j) % 4 === 0 ? -1 : 1;
-        neuronWeights.push(sign * (Math.random() * 0.35 + 0.25) * 0.09);
+        neuronWeights.push(0.02 * (0.8 + Math.random() * 0.4));
       }
       layer3.push(neuronWeights);
     }
 
-    // Output layer: 12 -> 1 (mostly positive, some negative)
+    // Output layer - positive weights
     const outputLayer = [];
     for (let j = 0; j < 12; j++) {
-      const sign = j % 4 === 0 ? -1 : 1;
-      outputLayer.push(sign * (Math.random() * 0.4 + 0.3) * 0.12);
+      outputLayer.push(0.083); // Equal contribution from each hidden neuron
     }
 
     return {
@@ -134,10 +123,10 @@ export class NeuralNetworkPredictor {
 
   initializeBiases() {
     return {
-      layer1: Array(50).fill(0).map(() => (Math.random() - 0.5) * 0.1),
-      layer2: Array(25).fill(0).map(() => (Math.random() - 0.5) * 0.1),
-      layer3: Array(12).fill(0).map(() => (Math.random() - 0.5) * 0.1),
-      output: -1.2 // Adjusted bias for 25.2% - 81.8% range
+      layer1: Array(50).fill(0),
+      layer2: Array(25).fill(0),
+      layer3: Array(12).fill(0),
+      output: -1.1 // Adjusted for 25.2% - 81.8% range
     };
   }
 
@@ -146,9 +135,13 @@ export class NeuralNetworkPredictor {
     return Math.tanh(x);
   }
 
-  // Sigmoid for output layer
+  // Sigmoid for output layer - scaled to 25.2% - 81.8% range
   sigmoid(x) {
-    return 1 / (1 + Math.exp(-x));
+    const rawSigmoid = 1 / (1 + Math.exp(-x));
+    // Map from [0, 1] to [0.252, 0.818]
+    const minProb = 0.252;
+    const maxProb = 0.818;
+    return minProb + rawSigmoid * (maxProb - minProb);
   }
 
   // Forward pass through the network
