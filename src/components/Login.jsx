@@ -82,8 +82,9 @@ const Login = ({ onLogin }) => {
         <div className="login-footer">
           <div className="tech-specs">
             <span>🔬 Architecture: [50, 25, 12]</span>
-            <span>⚡ TanhWithDropout</span>
-            <span>📊 AUC-ROC: 0.77</span>
+            <span>⚡ RectifierWithDropout</span>
+            <span>📊 AUC-ROC: 0.972</span>
+            <span>🎯 Accuracy: 97.78%</span>
           </div>
         </div>
 

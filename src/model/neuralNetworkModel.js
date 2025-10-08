@@ -1,15 +1,16 @@
 // Neural Network Model Configuration and Prediction
-// Based on the optimal configuration: [50, 25, 12] architecture with TanhWithDropout
+// Based on the optimal configuration: [50, 25, 12] architecture with RectifierWithDropout
 
 export const MODEL_CONFIG = {
   architecture: [50, 25, 12],
-  activation: 'TanhWithDropout',
-  inputDropout: 0.20,
-  hiddenDropout: [0.3, 0.2, 0.1],
-  l1: 5e-05,
-  l2: 5e-04,
+  activation: 'RectifierWithDropout',
+  inputDropout: 0.1,
+  hiddenDropout: [0.3, 0.3, 0.3],
+  l1: 1e-05,
+  l2: 1e-04,
   learningRate: 0.005,
-  epochs: 300
+  earlyStoppingPatience: 10,
+  seed: 12345
 };
 
 // Variable importance from the trained model

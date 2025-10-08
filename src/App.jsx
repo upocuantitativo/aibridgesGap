@@ -86,7 +86,7 @@ function App() {
             Predictive Edge of AI in Entrepreneurship - Neural Network Model for New Venture Creation
           </p>
           <p className="footer-tech">
-            Powered by Deep Learning | Architecture: [50, 25, 12] | TanhWithDropout Activation
+            Architecture: [50, 25, 12] (87 neurons) | RectifierWithDropout | Learning Rate: 0.005 | AUC-ROC: 0.972
           </p>
         </div>
       </footer>

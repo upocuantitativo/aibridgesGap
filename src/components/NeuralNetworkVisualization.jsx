@@ -123,7 +123,7 @@ const NeuralNetworkVisualization = ({ activations, weights }) => {
     ctx.fillStyle = '#667eea';
     ctx.font = 'italic 11px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('TanhWithDropout Activation', width / 2, 25);
+    ctx.fillText('RectifierWithDropout Activation', width / 2, 25);
   };
 
   return (
@@ -131,16 +131,22 @@ const NeuralNetworkVisualization = ({ activations, weights }) => {
       <h3>Neural Network Architecture</h3>
       <div className="architecture-info">
         <div className="info-item">
-          <strong>Architecture:</strong> [50, 25, 12]
-        </div>
-        <div className="info-item">
-          <strong>Total Neurons:</strong> 87 hidden + 35 input + 1 output = 123
+          <strong>Architecture:</strong> [50, 25, 12] (87 hidden neurons)
         </div>
         <div className="info-item">
           <strong>Activation:</strong> {MODEL_CONFIG.activation}
         </div>
         <div className="info-item">
+          <strong>Learning Rate:</strong> {MODEL_CONFIG.learningRate}
+        </div>
+        <div className="info-item">
           <strong>Dropout:</strong> Input: {MODEL_CONFIG.inputDropout}, Hidden: [{MODEL_CONFIG.hiddenDropout.join(', ')}]
+        </div>
+        <div className="info-item">
+          <strong>Regularization:</strong> L1={MODEL_CONFIG.l1}, L2={MODEL_CONFIG.l2}
+        </div>
+        <div className="info-item">
+          <strong>Early Stopping:</strong> Patience {MODEL_CONFIG.earlyStoppingPatience} epochs
         </div>
       </div>
 
