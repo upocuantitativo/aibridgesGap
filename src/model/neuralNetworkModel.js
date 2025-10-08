@@ -167,10 +167,9 @@ export class NeuralNetworkPredictor {
     }
 
     // Normalize weighted sum to probability range
-    // Min sum: all at 1 (barriers at 5) ≈ -14 to 0
-    // Max sum: all at 5 (barriers at 1) ≈ 0 to 34
-    const minSum = -14;
-    const maxSum = 34;
+    // Calculated values: min = -1.375, max = 15.227
+    const minSum = -1.375;
+    const maxSum = 15.227;
 
     // Map to 0-1 range
     const normalizedScore = (weightedSum - minSum) / (maxSum - minSum);
