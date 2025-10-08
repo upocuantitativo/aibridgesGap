@@ -70,7 +70,7 @@
 }
 
 .survey-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   width: 100%;
@@ -80,6 +80,7 @@
 @media (max-width: 768px) {
   .survey-container {
     padding: 10px;
+    max-width: 100%;
   }
 }
 
@@ -163,23 +164,25 @@
 
 .question-item {
   margin-bottom: 6px;
-  padding: 8px 12px;
+  padding: 8px 10px;
   background: #f8f9fa;
   border-radius: 4px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  overflow: hidden; /* Prevent overflow */
+  gap: 10px;
+  overflow: visible; /* Allow content to be visible */
+  flex-wrap: nowrap;
 }
 
 .question-item label {
   color: #555;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  min-width: 180px;
-  max-width: 250px;
-  flex-shrink: 0;
+  min-width: 140px;
+  max-width: 200px;
+  flex-shrink: 1;
   word-wrap: break-word;
+  line-height: 1.3;
 }
 
 @media (max-width: 1024px) {
@@ -208,12 +211,11 @@
 .likert-scale {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   justify-content: flex-start;
   flex-wrap: nowrap;
   flex: 1;
-  max-width: 100%;
-  overflow: hidden;
+  min-width: 0; /* Allow shrinking */
 }
 
 .likert-option {
@@ -229,19 +231,23 @@
   position: absolute;
   opacity: 0;
   cursor: pointer;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 .likert-number {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   text-align: center;
   border: 2px solid #ddd;
   border-radius: 4px;
   background: white;
   transition: all 0.15s;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   box-sizing: border-box;
 }
@@ -259,10 +265,12 @@
 
 .likert-labels {
   display: flex;
-  gap: 8px;
-  font-size: 0.7rem;
+  gap: 5px;
+  font-size: 0.65rem;
   color: #666;
-  margin-left: 10px;
+  margin-left: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .likert-label-start,
@@ -284,6 +292,10 @@
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
+  .question-item label {
+    font-size: 0.8rem;
+  }
+
   .likert-scale {
     gap: 2px;
   }
@@ -291,18 +303,20 @@
   .likert-number {
     width: 26px;
     height: 26px;
-    line-height: 26px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
 
   .likert-labels {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     margin-left: 5px;
-    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 480px) {
+  .question-item label {
+    font-size: 0.75rem;
+  }
+
   .likert-scale {
     gap: 1px;
   }
@@ -310,13 +324,12 @@
   .likert-number {
     width: 24px;
     height: 24px;
-    line-height: 24px;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     border-width: 1px;
   }
 
   .likert-labels {
-    font-size: 0.6rem;
+    font-size: 0.58rem;
     margin-left: 3px;
   }
 }
