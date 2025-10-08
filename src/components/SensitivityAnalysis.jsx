@@ -25,9 +25,11 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
     const result = neuralNetwork.predict(inputArray);
     setPrediction(result);
 
-    // Get recommendations
-    const recs = neuralNetwork.getRecommendations(inputArray);
-    setRecommendations(recs.slice(0, 10)); // Top 10 recommendations
+    // Get recommendations - calculate all and take top 10
+    const allRecs = neuralNetwork.getRecommendations(inputArray);
+    // Filter out recommendations that would have minimal impact
+    const significantRecs = allRecs.filter(rec => rec.potentialIncrease > 0.0001);
+    setRecommendations(significantRecs.slice(0, 10)); // Top 10 significant recommendations
   }, [values]);
 
   const toggleVariable = (varName) => {
@@ -39,15 +41,10 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
 
   const handleValueChange = (varName, newValue) => {
     const numValue = parseFloat(newValue);
-    console.log(`Changing ${varName} from ${values[varName]} to ${numValue}`);
-    setValues(prev => {
-      const updated = {
-        ...prev,
-        [varName]: numValue
-      };
-      console.log('Updated values:', updated);
-      return updated;
-    });
+    setValues(prev => ({
+      ...prev,
+      [varName]: numValue
+    }));
   };
 
   const getProbabilityLabel = (prob) => {

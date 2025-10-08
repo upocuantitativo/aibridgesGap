@@ -22,8 +22,6 @@ const Survey = ({ onLoadToModel, onTabChange }) => {
   const handleLoadToModel = () => {
     // Map survey responses to model variables
     const modelValues = mapSurveyToModel(surveyData);
-    console.log('Survey data:', surveyData);
-    console.log('Mapped model values:', modelValues);
     onLoadToModel(modelValues);
   };
 
