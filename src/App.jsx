@@ -20,10 +20,16 @@ function App() {
 
   // Update prediction when values change (handled in SensitivityAnalysis)
   React.useEffect(() => {
-    const varNames = Object.keys(values);
-    const inputArray = varNames.map(name => values[name]);
-    const result = neuralNetwork.predict(inputArray);
-    setPrediction(result);
+    try {
+      const varNames = Object.keys(values);
+      if (varNames.length > 0) {
+        const inputArray = varNames.map(name => values[name]);
+        const result = neuralNetwork.predict(inputArray);
+        setPrediction(result);
+      }
+    } catch (error) {
+      console.error('Error updating prediction:', error);
+    }
   }, [values]);
 
   return (
