@@ -164,8 +164,15 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
             {recommendations.map((rec, idx) => {
               const varDef = VARIABLES_DEFINITION[rec.variable];
               const isDecrease = rec.direction === 'decrease';
+              const currentActualValue = values[rec.variable];
+
+              // Skip if current value already matches suggested value
+              if (Math.abs(currentActualValue - rec.suggestedValue) < 0.01) {
+                return null;
+              }
+
               return (
-                <div key={`${rec.variable}-${rec.direction}`} className="recommendation-card">
+                <div key={`${rec.variable}-${rec.direction}-${idx}`} className="recommendation-card">
                   <div className="rec-header">
                     <span className="rec-rank">#{idx + 1}</span>
                     <span className="rec-variable">{varDef.name}</span>
@@ -175,7 +182,7 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
                   <div className="rec-details">
                     <div className="rec-row">
                       <span className="rec-label">Current Value:</span>
-                      <span className="rec-value">{values[rec.variable]?.toFixed(1) || 'N/A'}</span>
+                      <span className="rec-value">{currentActualValue.toFixed(1)}</span>
                     </div>
                     <div className="rec-row">
                       <span className="rec-label">Suggested Value:</span>
@@ -190,7 +197,9 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
                   </div>
                   <button
                     className="apply-button"
-                    onClick={() => handleValueChange(rec.variable, rec.suggestedValue)}
+                    onClick={() => {
+                      handleValueChange(rec.variable, rec.suggestedValue);
+                    }}
                   >
                     Apply Suggestion {isDecrease ? '↓' : '↑'}
                   </button>
