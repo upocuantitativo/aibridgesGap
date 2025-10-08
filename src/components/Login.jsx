@@ -8,8 +8,8 @@ const Login = ({ onLogin }) => {
   const [isShaking, setIsShaking] = useState(false);
 
   // Credentials
-  const CORRECT_USERNAME = 'upocuantitativo';
-  const CORRECT_PASSWORD = '1234uiOP$';
+  const CORRECT_USERNAME = 'admin';
+  const CORRECT_PASSWORD = 'admin1234';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const Login = ({ onLogin }) => {
 
       <div className={`login-box ${isShaking ? 'shake' : ''}`}>
         <div className="login-header">
-          <div className="brain-icon">🧠</div>
+          <div className="brain-icon">💼</div>
           <h1>Predictive Edge of AI</h1>
           <h2>in Entrepreneurship</h2>
         </div>
