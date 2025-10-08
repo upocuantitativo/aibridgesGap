@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { VARIABLES_DEFINITION, CATEGORIES, getDefaultValues } from '../data/variablesDefinition';
 import { neuralNetwork, getProbabilityColor, formatProbability } from '../model/neuralNetworkModel';
 import NeuralNetworkVisualization from './NeuralNetworkVisualization';
@@ -10,6 +10,7 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
   const [expandedVars, setExpandedVars] = useState({});
   const [prediction, setPrediction] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
+  const debounceTimerRef = useRef(null);
 
   // Load initial values when provided from Survey
   useEffect(() => {
@@ -18,18 +19,36 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
     }
   }, [initialValues]);
 
-  // Update prediction whenever values change
+  // Update prediction immediately but debounce recommendations
   useEffect(() => {
     const varNames = Object.keys(VARIABLES_DEFINITION);
     const inputArray = varNames.map(name => values[name]);
+
+    // Always update prediction immediately (fast)
     const result = neuralNetwork.predict(inputArray);
     setPrediction(result);
 
-    // Get recommendations - calculate all and take top 10
-    const allRecs = neuralNetwork.getRecommendations(inputArray);
-    // Filter out recommendations that would have minimal impact
-    const significantRecs = allRecs.filter(rec => rec.potentialIncrease > 0.0001);
-    setRecommendations(significantRecs.slice(0, 10)); // Top 10 significant recommendations
+    // Debounce recommendations calculation (expensive)
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      try {
+        const allRecs = neuralNetwork.getRecommendations(inputArray);
+        const significantRecs = allRecs.filter(rec => rec.potentialIncrease > 0.0001);
+        setRecommendations(significantRecs.slice(0, 10));
+      } catch (error) {
+        console.error('Error calculating recommendations:', error);
+        setRecommendations([]);
+      }
+    }, 300); // Wait 300ms after last change
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
   }, [values]);
 
   const toggleVariable = (varName) => {
@@ -54,6 +73,15 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
     return 'High Probability';
   };
 
+  // Initialize prediction on first render if null
+  if (!prediction) {
+    const varNames = Object.keys(VARIABLES_DEFINITION);
+    const inputArray = varNames.map(name => values[name]);
+    const result = neuralNetwork.predict(inputArray);
+    setPrediction(result);
+    return <div className="sensitivity-analysis">Loading...</div>;
+  }
+
   return (
     <div className="sensitivity-analysis">
       {/* Fixed Header with Title, Tabs, and Probability */}
@@ -77,11 +105,11 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
               <div
                 className="probability-mini-value"
                 style={{
-                  backgroundColor: getProbabilityColor(prediction?.probability || 0.5),
+                  backgroundColor: getProbabilityColor(prediction.probability),
                   color: 'white'
                 }}
               >
-                {formatProbability(prediction?.probability || 0.5)}
+                {formatProbability(prediction.probability)}
               </div>
             </div>
           </div>
@@ -166,8 +194,8 @@ const SensitivityAnalysis = ({ initialValues, onTabChange }) => {
               const isDecrease = rec.direction === 'decrease';
               const currentActualValue = values[rec.variable];
 
-              // Skip if current value already matches suggested value
-              if (Math.abs(currentActualValue - rec.suggestedValue) < 0.01) {
+              // Skip if current value is invalid or already matches suggested value
+              if (!currentActualValue || Math.abs(currentActualValue - rec.suggestedValue) < 0.01) {
                 return null;
               }
 
