@@ -1,69 +1,151 @@
 .sensitivity-analysis {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding-top: 120px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
 }
 
-.header {
-  text-align: center;
-  color: white;
-  margin-bottom: 30px;
-  padding: 30px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
+/* Fixed Header */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 12px 30px;
+  z-index: 1000;
   backdrop-filter: blur(10px);
 }
 
-.header h1 {
-  font-size: 2.5rem;
-  margin: 0 0 10px 0;
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
-.subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin: 0;
+.header-left {
+  flex: 1;
 }
 
-/* Prediction Container */
-.prediction-container {
-  max-width: 600px;
-  margin: 0 auto 40px;
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.prediction-container h2 {
-  text-align: center;
-  color: #333;
-  margin: 0 0 20px 0;
+.header-left h1 {
   font-size: 1.5rem;
-}
-
-.probability-display {
-  border-radius: 10px;
-  padding: 40px 20px;
-  text-align: center;
-  transition: all 0.5s ease;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.probability-value {
-  font-size: 4rem;
+  margin: 0 0 3px 0;
+  color: #667eea;
   font-weight: 700;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.probability-label {
-  font-size: 1.3rem;
-  margin-top: 10px;
-  opacity: 0.95;
+.header-left .subtitle {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 8px 0;
+  opacity: 0.9;
+}
+
+.header-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-button {
+  padding: 6px 14px;
+  background: transparent;
+  border: 2px solid #667eea;
+  color: #667eea;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.tab-button:hover:not(:disabled) {
+  background: #667eea;
+  color: white;
+}
+
+.tab-button.active {
+  background: #667eea;
+  color: white;
+}
+
+.tab-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #999;
+  color: #999;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.probability-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.probability-mini-label {
+  font-size: 0.8rem;
+  color: #666;
   font-weight: 500;
+}
+
+.probability-mini-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
+}
+
+@media (max-width: 1024px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .sensitivity-analysis {
+    padding-top: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-left h1 {
+    font-size: 1.2rem;
+  }
+
+  .header-left .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .probability-mini {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+  }
+
+  .header-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    font-size: 0.8rem;
+    padding: 5px 12px;
+  }
 }
 
 /* Main Grid */

@@ -1,0 +1,261 @@
+.survey-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.survey-intro {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.survey-intro h2 {
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.survey-intro p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.start-survey-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.start-survey-button:hover {
+  transform: scale(1.05);
+}
+
+.survey-section {
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.survey-section h2 {
+  color: #667eea;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.section-note {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-left: 3px solid #667eea;
+}
+
+.question-group {
+  margin-bottom: 25px;
+}
+
+.question-group h3 {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.question-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.question-item label {
+  display: block;
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.question-item select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+/* Compact Likert Scale */
+.likert-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.likert-scale > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.likert-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  flex: 1;
+}
+
+.likert-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.likert-number {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background: white;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.likert-option:hover .likert-number {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.likert-option input[type="radio"]:checked ~ .likert-number {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.likert-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 3px;
+}
+
+.likert-label-start,
+.likert-label-end {
+  font-style: italic;
+}
+
+/* Section Navigation */
+.section-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.prev-section-btn,
+.next-section-btn {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.prev-section-btn:hover,
+.next-section-btn:hover {
+  background: #764ba2;
+  transform: translateX(3px);
+}
+
+.prev-section-btn:hover {
+  transform: translateX(-3px);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 25px 0;
+  justify-content: center;
+}
+
+.save-button,
+.load-model-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.save-button {
+  background: #28a745;
+  color: white;
+}
+
+.save-button:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+.load-model-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.load-model-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .survey-container {
+    padding: 10px;
+  }
+
+  .survey-section {
+    padding: 15px;
+  }
+
+  .likert-number {
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .save-button,
+  .load-model-button {
+    width: 100%;
+  }
+}

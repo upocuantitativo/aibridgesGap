@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { VARIABLES_DEFINITION, CATEGORIES, getDefaultValues } from '../data/variablesDefinition';
 import { neuralNetwork, getProbabilityColor, formatProbability } from '../model/neuralNetworkModel';
+import NeuralNetworkVisualization from './NeuralNetworkVisualization';
+import ChartsPanel from './ChartsPanel';
 import './SensitivityAnalysis.css';
 
-const SensitivityAnalysis = () => {
+const SensitivityAnalysis = ({ initialValues }) => {
   const [values, setValues] = useState(getDefaultValues());
   const [expandedVars, setExpandedVars] = useState({});
   const [prediction, setPrediction] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
+
+  // Load initial values when provided from Survey
+  useEffect(() => {
+    if (initialValues) {
+      setValues(initialValues);
+    }
+  }, [initialValues]);
 
   // Update prediction whenever values change
   useEffect(() => {
@@ -44,26 +53,26 @@ const SensitivityAnalysis = () => {
 
   return (
     <div className="sensitivity-analysis">
-      <header className="header">
-        <h1>Predictive Edge of AI in Entrepreneurship</h1>
-        <p className="subtitle">Neural Network Model for New Venture Creation Prediction</p>
-      </header>
-
-      {/* Prediction Display */}
-      <div className="prediction-container">
-        <h2>Venture Creation Probability</h2>
-        <div
-          className="probability-display"
-          style={{
-            backgroundColor: getProbabilityColor(prediction?.probability || 0.5),
-            color: 'white'
-          }}
-        >
-          <div className="probability-value">
-            {formatProbability(prediction?.probability || 0.5)}
+      {/* Fixed Header with Title, Tabs, and Probability */}
+      <div className="fixed-header">
+        <div className="header-content">
+          <div className="header-left">
+            <h1>Predictive Edge of AI in Entrepreneurship</h1>
+            <p className="subtitle">Neural Network Model for New Venture Creation Prediction</p>
           </div>
-          <div className="probability-label">
-            {getProbabilityLabel(prediction?.probability || 0.5)}
+          <div className="header-right">
+            <div className="probability-mini">
+              <span className="probability-mini-label">Venture Creation Probability</span>
+              <div
+                className="probability-mini-value"
+                style={{
+                  backgroundColor: getProbabilityColor(prediction?.probability || 0.5),
+                  color: 'white'
+                }}
+              >
+                {formatProbability(prediction?.probability || 0.5)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -152,7 +161,7 @@ const SensitivityAnalysis = () => {
                   <div className="rec-details">
                     <div className="rec-row">
                       <span className="rec-label">Current Value:</span>
-                      <span className="rec-value">{rec.currentValue.toFixed(1)}</span>
+                      <span className="rec-value">{values[rec.variable]?.toFixed(1) || 'N/A'}</span>
                     </div>
                     <div className="rec-row">
                       <span className="rec-label">Suggested Value:</span>
@@ -161,7 +170,7 @@ const SensitivityAnalysis = () => {
                     <div className="rec-row">
                       <span className="rec-label">Potential Impact:</span>
                       <span className="rec-value impact">
-                        +{formatProbability(rec.potentialIncrease)}
+                        +{(rec.potentialIncrease * 100).toFixed(4)}%
                       </span>
                     </div>
                   </div>
@@ -182,6 +191,19 @@ const SensitivityAnalysis = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Neural Network and Charts */}
+      <div className="container">
+        <NeuralNetworkVisualization
+          activations={prediction?.activations}
+          weights={neuralNetwork.weights}
+        />
+
+        <ChartsPanel
+          currentValues={values}
+          prediction={prediction}
+        />
       </div>
     </div>
   );

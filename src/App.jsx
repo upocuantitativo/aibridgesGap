@@ -1,36 +1,24 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
 import SensitivityAnalysis from './components/SensitivityAnalysis';
-import NeuralNetworkVisualization from './components/NeuralNetworkVisualization';
-import ChartsPanel from './components/ChartsPanel';
-import { getDefaultValues } from './data/variablesDefinition';
-import { neuralNetwork } from './model/neuralNetworkModel';
+import Survey from './components/Survey';
 import './App.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentTab, setCurrentTab] = useState('model');
-  const [values, setValues] = useState(getDefaultValues());
-  const [prediction, setPrediction] = useState(null);
+  const [modelValues, setModelValues] = useState(null);
 
   // If not authenticated, show login screen
   if (!isAuthenticated) {
     return <Login onLogin={() => setIsAuthenticated(true)} />;
   }
 
-  // Update prediction when values change (handled in SensitivityAnalysis)
-  React.useEffect(() => {
-    try {
-      const varNames = Object.keys(values);
-      if (varNames.length > 0) {
-        const inputArray = varNames.map(name => values[name]);
-        const result = neuralNetwork.predict(inputArray);
-        setPrediction(result);
-      }
-    } catch (error) {
-      console.error('Error updating prediction:', error);
-    }
-  }, [values]);
+  const handleLoadToModel = (values) => {
+    setModelValues(values);
+    setCurrentTab('model');
+    alert('Survey data loaded into the model! Check the Model Analysis tab.');
+  };
 
   return (
     <div className="app">
@@ -45,44 +33,19 @@ function App() {
           <button
             className={`nav-button ${currentTab === 'survey' ? 'active' : ''}`}
             onClick={() => setCurrentTab('survey')}
-            disabled
-            title="Survey form - Coming soon"
           >
-            📝 Survey (Coming Soon)
+            📝 Survey
           </button>
         </div>
       </nav>
 
       <main className="main-content">
         {currentTab === 'model' && (
-          <>
-            <SensitivityAnalysis />
-
-            <div className="container">
-              <NeuralNetworkVisualization
-                activations={prediction?.activations}
-                weights={neuralNetwork.weights}
-              />
-
-              <ChartsPanel
-                currentValues={values}
-                prediction={prediction}
-              />
-            </div>
-          </>
+          <SensitivityAnalysis initialValues={modelValues} />
         )}
 
         {currentTab === 'survey' && (
-          <div className="coming-soon">
-            <h2>Survey Form</h2>
-            <p>This feature will be available soon. You will be able to:</p>
-            <ul>
-              <li>Complete the entrepreneurship survey</li>
-              <li>Save your responses</li>
-              <li>View personalized recommendations</li>
-              <li>Track your progress over time</li>
-            </ul>
-          </div>
+          <Survey onLoadToModel={handleLoadToModel} />
         )}
       </main>
 
