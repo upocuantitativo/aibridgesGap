@@ -26,13 +26,44 @@ An interactive web application for analyzing entrepreneurial potential using a D
 ## Technical Details
 
 ### Model Architecture
+
+The model employs a Deep Neural Network built with the H2O framework, utilizing the robust backpropagation algorithm based on standard backpropagation technique with modifications for weight optimization to locate local minima of the error function.
+
+**Architecture Configuration:**
 - **Type**: Deep Neural Network (H2O Framework)
-- **Architecture**: [50, 25, 12] - 87 hidden neurons
-- **Activation**: TanhWithDropout
-- **Dropout Rates**: Input: 0.20, Hidden: [0.3, 0.2, 0.1]
-- **Regularization**: L1=5e-05, L2=5e-04
-- **Learning Rate**: 0.005 (fixed)
-- **Performance**: AUC-ROC ~0.77, 75% target variable alignment
+- **Hidden Layers**: 3 layers with [50, 25, 12] neurons - 87 total hidden neurons
+- **Activation Function**: RectifierWithDropout
+- **Learning Rate**: 0.005 (tested at different rates for optimal performance)
+- **Dropout Rates**:
+  - Input layer: 0.1
+  - Hidden layers: [0.3, 0.3, 0.3]
+- **Regularization**:
+  - L1: 1e-05
+  - L2: 1e-04
+- **Early Stopping**: Patience of 10 epochs based on validation AUC
+- **Random Seed**: 12345 (for reproducibility)
+- **Class Balancing**: Balanced class weighting in loss function (152 positive vs. 302 negative cases, ratio 1:1.99)
+- **Threshold Optimization**: Determined by maximizing F1-score on validation set
+
+**Training Methodology:**
+
+The model development employed an iterative approach starting with 9 neurons and one hidden layer, progressively adding complexity through hidden layers and neurons. Multiple configurations were evaluated using backpropagation, resilient backpropagation (RPROP), and modified globally convergent version (GRPROP).
+
+**Validation Strategy:**
+
+Nested cross-validation approach:
+- **Data Split**: 70% training (n=318) and 30% holdout test (n=136) using stratified sampling
+- **Cross-Validation**: 3-fold cross-validation on training set for hyperparameter tuning
+- **Search Strategy**: Cartesian search for hyperparameter exploration
+- **Reporting**: All metrics from final 30% holdout test set (never used during training/validation)
+
+**Model Performance:**
+- **Accuracy**: 97.78% (vs. 66.5% majority-class baseline)
+- **AUC-ROC**: 0.972 (95% CI: 0.948-0.996)
+- **AUC-PR**: 0.968
+- **Precision**: 97.67% (for positive predictions - entrepreneurial action)
+- **Recall**: 95.45%
+- **Brier Score**: 0.045 (excellent calibration - predicted probabilities closely match observed outcomes)
 
 ### Variables (35 Total)
 Organized into 10 categories:
