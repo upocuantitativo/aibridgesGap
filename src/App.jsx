@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import Login from './components/Login';
 import SensitivityAnalysis from './components/SensitivityAnalysis';
 import Survey from './components/Survey';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentTab, setCurrentTab] = useState('model');
   const [modelValues, setModelValues] = useState(null);
-
-  // If not authenticated, show login screen
-  if (!isAuthenticated) {
-    return <Login onLogin={() => setIsAuthenticated(true)} />;
-  }
 
   const handleLoadToModel = (values) => {
     setModelValues(values);
