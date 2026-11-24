@@ -1,0 +1,17 @@
+/* Correcciones de legibilidad (impeccable detect), 2026-11-24. Solo color y tamaño de letra.
+   Para deshacerlas: quitar el <link> a este fichero en el HTML. */
+button.tab-button { color: #4b67e6 !important; }
+button.tab-button.active { color: #1c1c1c !important; }
+div.category-group > div.variable-card > div.variable-header > div.variable-control > span.value-display { color: #4764e6 !important; }
+div.info-item:nth-of-type(1) > strong { color: #4260e5 !important; }
+div.info-item:nth-of-type(2) > strong { color: #4260e5 !important; }
+div.info-item:nth-of-type(3) > strong { color: #4260e5 !important; }
+div.info-item:nth-of-type(4) > strong { color: #4260e5 !important; }
+div.info-item:nth-of-type(5) > strong { color: #3e5ce4 !important; }
+div.info-item:nth-of-type(6) > strong { color: #4260e5 !important; }
+div.recommendation-card > button.apply-button { color: #1c1c1c !important; }
+div.recommendation-card > div.rec-details > div.rec-row > span.rec-value.impact { color: #1d7a32 !important; }
+div.recommendation-card > div.rec-details > div.rec-row > span.rec-value.suggested { color: #3e5ce4 !important; }
+div.recommendation-card > div.rec-header > span.rec-direction-badge.increase { color: #262626 !important; }
+div.recommendation-card > div.rec-header > span.rec-rank { color: #1c1c1c !important; }
+li.recharts-legend-item.legend-item-1 > span.recharts-legend-item-text { color: #0f7f35 !important; }
